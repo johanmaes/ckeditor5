@@ -2,9 +2,6 @@
  * The configuration is used when releasing the `ckeditor5` package.
  */
 {
-  "extends": "./tsconfig.release.json",
-  "include": [
-    "./src/",
-    "./typings/"
-  ]
+	"extends": "./tsconfig.release.json",
+	"include": ["./src/", "./typings/"]
 }
