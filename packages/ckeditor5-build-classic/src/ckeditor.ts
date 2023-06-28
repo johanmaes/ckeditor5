@@ -8,7 +8,6 @@ import { Style } from '@ckeditor/ckeditor5-style';
 import { Mention } from '@ckeditor/ckeditor5-mention';
 import { PageBreak } from '@ckeditor/ckeditor5-page-break';
 import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
-import { SlashCommand } from '@ckeditor/ckeditor5-slash-command';
 import { SpecialCharacters } from '@ckeditor/ckeditor5-special-characters';
 import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
@@ -17,9 +16,6 @@ import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
 import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
 import { Highlight } from '@ckeditor/ckeditor5-highlight';
 import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
-import { ImportWord } from '@ckeditor/ckeditor5-import-word';
-import { ExportPdf } from '@ckeditor/ckeditor5-export-pdf';
-import { ExportWord } from '@ckeditor/ckeditor5-export-word';
 // The editor creator to use.
 import { ClassicEditor as ClassicEditorBase } from '@ckeditor/ckeditor5-editor-classic';
 import { BalloonEditor as BalloonEditorBase } from '@ckeditor/ckeditor5-editor-balloon';
@@ -113,9 +109,6 @@ const plugins = [
 	CloudServices,
 	Code,
 	Essentials,
-	ExportPdf,
-	ExportWord,
-	ImportWord,
 	FindAndReplace,
 	Font,
 	Highlight,
@@ -133,7 +126,6 @@ const plugins = [
 	PasteFromOffice,
 	PictureEditing,
 	RemoveFormat,
-	SlashCommand,
 	SourceEditing,
 	SpecialCharacters,
 	Style,
