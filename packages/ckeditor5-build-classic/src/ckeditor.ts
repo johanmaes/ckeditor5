@@ -3,6 +3,23 @@
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
  */
 
+import { WordCount } from '@ckeditor/ckeditor5-word-count';
+import { Style } from '@ckeditor/ckeditor5-style';
+import { Mention } from '@ckeditor/ckeditor5-mention';
+import { PageBreak } from '@ckeditor/ckeditor5-page-break';
+import { RemoveFormat } from '@ckeditor/ckeditor5-remove-format';
+import { SlashCommand } from '@ckeditor/ckeditor5-slash-command';
+import { SpecialCharacters } from '@ckeditor/ckeditor5-special-characters';
+import { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
+import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
+import { HtmlEmbed } from '@ckeditor/ckeditor5-html-embed';
+import { CodeBlock } from '@ckeditor/ckeditor5-code-block';
+import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
+import { Highlight } from '@ckeditor/ckeditor5-highlight';
+import { FindAndReplace } from '@ckeditor/ckeditor5-find-and-replace';
+import { ImportWord } from '@ckeditor/ckeditor5-import-word';
+import { ExportPdf } from '@ckeditor/ckeditor5-export-pdf';
+import { ExportWord } from '@ckeditor/ckeditor5-export-word';
 // The editor creator to use.
 import { ClassicEditor as ClassicEditorBase } from '@ckeditor/ckeditor5-editor-classic';
 import { BalloonEditor as BalloonEditorBase } from '@ckeditor/ckeditor5-editor-balloon';
@@ -13,6 +30,7 @@ import {
 	FontFamily,
 	FontColor,
 	FontBackgroundColor,
+	Font,
 } from '@ckeditor/ckeditor5-font';
 import { Alignment } from '@ckeditor/ckeditor5-alignment';
 import { Essentials } from '@ckeditor/ckeditor5-essentials';
@@ -20,8 +38,11 @@ import { UploadAdapter } from '@ckeditor/ckeditor5-adapter-ckfinder';
 import { Autoformat } from '@ckeditor/ckeditor5-autoformat';
 import {
 	Bold,
+	Code,
 	Italic,
 	Strikethrough,
+	Subscript,
+	Superscript,
 	Underline,
 } from '@ckeditor/ckeditor5-basic-styles';
 import { BlockQuote } from '@ckeditor/ckeditor5-block-quote';
@@ -30,8 +51,10 @@ import { CKFinder } from '@ckeditor/ckeditor5-ckfinder';
 import { EasyImage } from '@ckeditor/ckeditor5-easy-image';
 import { Heading } from '@ckeditor/ckeditor5-heading';
 import {
+	AutoImage,
 	Image,
 	ImageCaption,
+	ImageInsert,
 	ImageResize,
 	ImageStyle,
 	ImageToolbar,
@@ -39,46 +62,92 @@ import {
 	PictureEditing,
 } from '@ckeditor/ckeditor5-image';
 import { Indent, IndentBlock } from '@ckeditor/ckeditor5-indent';
-import { Link } from '@ckeditor/ckeditor5-link';
-import { List, ListProperties } from '@ckeditor/ckeditor5-list';
+import { AutoLink, Link, LinkImage } from '@ckeditor/ckeditor5-link';
+import {
+	DocumentList,
+	DocumentListProperties,
+	List,
+	ListProperties,
+} from '@ckeditor/ckeditor5-list';
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph';
 import { PasteFromOffice } from '@ckeditor/ckeditor5-paste-from-office';
-import { Table, TableToolbar } from '@ckeditor/ckeditor5-table';
+import {
+	Table,
+	TableCaption,
+	TableCellProperties,
+	TableColumnResize,
+	TableProperties,
+	TableToolbar,
+} from '@ckeditor/ckeditor5-table';
 import { TextTransformation } from '@ckeditor/ckeditor5-typing';
 import { CloudServices } from '@ckeditor/ckeditor5-cloud-services';
+import { Template } from '@ckeditor/ckeditor5-ui';
 
 class ClassicEditor extends ClassicEditorBase {}
 class BalloonEditor extends BalloonEditorBase {}
 class DocumentEditor extends DecoupledEditorBase {}
 
 const plugins = [
-	Essentials,
-	UploadAdapter,
 	Autoformat,
-	Bold,
-	Italic,
 	BlockQuote,
-	CKBox,
-	CKFinder,
-	CloudServices,
-	EasyImage,
+	Bold,
 	Heading,
 	Image,
 	ImageCaption,
 	ImageStyle,
 	ImageToolbar,
-	ImageUpload,
+	CodeBlock,
 	Indent,
+	Italic,
 	Link,
-	List,
+	DocumentList,
 	MediaEmbed,
 	Paragraph,
-	PasteFromOffice,
-	PictureEditing,
 	Table,
 	TableToolbar,
+	Alignment,
+	AutoImage,
+	AutoLink,
+	CKBox,
+	CloudServices,
+	Code,
+	Essentials,
+	ExportPdf,
+	ExportWord,
+	ImportWord,
+	FindAndReplace,
+	Font,
+	Highlight,
+	HorizontalLine,
+	HtmlEmbed,
+	ImageInsert,
+	ImageResize,
+	ImageUpload,
+	IndentBlock,
+	GeneralHtmlSupport,
+	LinkImage,
+	DocumentListProperties,
+	Mention,
+	PageBreak,
+	PasteFromOffice,
+	PictureEditing,
+	RemoveFormat,
+	SlashCommand,
+	SourceEditing,
+	SpecialCharacters,
+	Style,
+	Strikethrough,
+	Subscript,
+	Superscript,
+	TableCaption,
+	TableCellProperties,
+	TableColumnResize,
+	TableProperties,
+	Template,
 	TextTransformation,
+	Underline,
+	WordCount,
 ];
 
 const config = {
@@ -87,22 +156,70 @@ const config = {
 			'undo',
 			'redo',
 			'|',
+			'sourceEditing',
+			'|',
+			'exportPdf',
+			'exportWord',
+			'importWord',
+			'|',
+			'formatPainter',
+			'findAndReplace',
+			'selectAll',
+			'|',
 			'heading',
 			'|',
+			'style',
+			'|',
+			'fontSize',
+			'fontFamily',
+			'fontColor',
+			'fontBackgroundColor',
+			'-',
 			'bold',
 			'italic',
+			'underline',
+			{
+				label: 'Formatting',
+				icon: 'text',
+				items: [
+					'strikethrough',
+					'subscript',
+					'superscript',
+					'code',
+					'|',
+					'removeFormat',
+				],
+			},
+			'|',
+			'specialCharacters',
+			'horizontalLine',
+			'pageBreak',
 			'|',
 			'link',
-			'uploadImage',
+			'insertImage',
+			'ckbox',
 			'insertTable',
-			'blockQuote',
-			'mediaEmbed',
+			'insertTemplate',
+			{
+				label: 'Insert',
+				icon: 'plus',
+				items: [
+					'highlight',
+					'blockQuote',
+					'mediaEmbed',
+					'codeBlock',
+					'htmlEmbed',
+				],
+			},
+			'|',
+			'alignment',
 			'|',
 			'bulletedList',
 			'numberedList',
 			'outdent',
 			'indent',
 		],
+		shouldNotGroupWhenFull: true,
 	},
 	image: {
 		toolbar: [
@@ -123,102 +240,10 @@ const config = {
 
 ClassicEditor.builtinPlugins = plugins;
 BalloonEditor.builtinPlugins = plugins;
-DocumentEditor.builtinPlugins = [
-	Essentials,
-	Alignment,
-	FontSize,
-	FontFamily,
-	FontColor,
-	FontBackgroundColor,
-	UploadAdapter,
-	Autoformat,
-	Bold,
-	Italic,
-	Strikethrough,
-	Underline,
-	BlockQuote,
-	CKBox,
-	CKFinder,
-	CloudServices,
-	EasyImage,
-	Heading,
-	Image,
-	ImageCaption,
-	ImageResize,
-	ImageStyle,
-	ImageToolbar,
-	ImageUpload,
-	Indent,
-	IndentBlock,
-	Link,
-	List,
-	ListProperties,
-	MediaEmbed,
-	Paragraph,
-	PasteFromOffice,
-	PictureEditing,
-	Table,
-	TableToolbar,
-	TextTransformation,
-];
+DocumentEditor.builtinPlugins = plugins;
 
 ClassicEditor.defaultConfig = config;
 BalloonEditor.defaultConfig = config;
-DocumentEditor.defaultConfig = {
-	toolbar: {
-		items: [
-			'undo',
-			'redo',
-			'|',
-			'heading',
-			'|',
-			'fontfamily',
-			'fontsize',
-			'fontColor',
-			'fontBackgroundColor',
-			'|',
-			'bold',
-			'italic',
-			'underline',
-			'strikethrough',
-			'|',
-			'link',
-			'uploadImage',
-			'insertTable',
-			'blockQuote',
-			'mediaEmbed',
-			'|',
-			'alignment',
-			'|',
-			'bulletedList',
-			'numberedList',
-			'outdent',
-			'indent',
-		],
-	},
-	image: {
-		resizeUnit: 'px' as const,
-		toolbar: [
-			'imageStyle:inline',
-			'imageStyle:wrapText',
-			'imageStyle:breakText',
-			'|',
-			'toggleImageCaption',
-			'imageTextAlternative',
-		],
-	},
-	table: {
-		contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'],
-	},
-	list: {
-		properties: {
-			styles: true,
-			startIndex: true,
-			reversed: true,
-		},
-	},
-	// This value must be kept in sync with the language defined in webpack.config.js.
-	language: 'en',
-};
+DocumentEditor.defaultConfig = config;
 
 export default { ClassicEditor, BalloonEditor, DocumentEditor };
